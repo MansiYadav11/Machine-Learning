@@ -60,3 +60,25 @@ df_clean['smoker'].value_counts()
 df_clean['smoker']=df_clean['smoker'].map({"no":0,"yes":1})
 df_clean.head()
 
+df_clean.rename(columns={
+  'sex' : 'is_female',
+  'smoker' : 'is_smoker'
+  } ,inplace=True)
+
+df_clean.head()
+
+# Add the 'region' column back to df_clean from the original df
+df_clean['region'] = df['region']
+
+#encoding region with onehot encoding
+df['region'].value_counts()
+
+df_clean=pd.get_dummies(df_clean,columns=['region'],drop_first=True)
+df_clean=df_clean.astype(int)
+df_clean.head()
+
+#FEATURE ENGINEERING AND EXTRACTION
+
+sns.histplot(df['bmi'])
+df_clean['bmi_category']=pd.cut()
+
