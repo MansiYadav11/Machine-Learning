@@ -78,7 +78,19 @@ df_clean=df_clean.astype(int)
 df_clean.head()
 
 #FEATURE ENGINEERING AND EXTRACTION
-
 sns.histplot(df['bmi'])
-df_clean['bmi_category']=pd.cut()
+df_clean['bmi_category']=pd.cut(
+    df_clean['bmi'],
+    bins=[0,18.5,24.9,29.9,float('inf')]
+    ,labels=['underweight','healthy','overweight','obese']
+)
+
+df_clean=pd.get_dummies(df_clean,columns=['bmi_category'],drop_first=True)
+
+df_clean=df_clean.astype(int)
+df_clean
+
+#FEATURE SCALING
+
+df_clean.columnscut()
 
