@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 df=pd.read_csv('/insurance.csv')
-data.head()
+df.head()
 
 #EDA
 
@@ -91,6 +91,25 @@ df_clean=df_clean.astype(int)
 df_clean
 
 #FEATURE SCALING
+#like age and charges,children
+from sklearn.preprocessing import StandardScaler
+cols=['age','bmi','children']
+scaler=StandardScaler()
+df_clean[cols]=scaler.fit_transform(df_clean[cols])
+df_clean.head()
 
-df_clean.columnscut()
+#output variable=charges needs to be kept same
 
+#FEATURE EXTRACTION
+#by pearson Correlation Calculation
+
+from scipy.stats import pearsonr
+#Pearson Correlation Calculation#List of features t ocheck against target
+
+selected_features=['age','bmi','children','is_female','is_smoker','region_northwest','region_southeast',
+                   'region_southwest','bmi_category_Normal','bmi_category_overweight','bmi_category_obese']
+
+correlations={
+    feature:pearsonr(df_clean[feature],df_clean['charges'])[0] 
+    for feature in selected_features
+}
