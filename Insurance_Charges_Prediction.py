@@ -113,3 +113,18 @@ correlations={
     feature:pearsonr(df_clean[feature],df_clean['charges'])[0] 
     for feature in selected_features
 }
+
+#Converting the dictionary obtained from the above code into a dataframe
+correlation_df=pd.DataFrame(list(correlations.items()),columns=['feature','correlation'])
+correlation_df=correlation_df.sort_values(by='correlation',ascending=False)
+correlation_df.head()
+
+#Selecting categorical features for chi test
+cat_features={
+    'is_female','is_smoker',
+    'region_northwest','region_southeast','region_southwest,
+    'bmi_category_healthy','bmi_category_overweight','bmi_category_obese'
+}
+#The target variable is a continuous variable(charges) not categorical
+#So converting the charges into bins (to reduce the continuity and bringing the categorical nature )
+
