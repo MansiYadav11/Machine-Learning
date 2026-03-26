@@ -128,3 +128,26 @@ cat_features={
 #The target variable is a continuous variable(charges) not categorical
 #So converting the charges into bins (to reduce the continuity and bringing the categorical nature )
 
+from scipy.stats import chi2_contingency
+import pandas as pd
+
+alpha = 0.05
+df_clean['charges_bin']=pd.cut(df_clean['charges'],bins=4,labels=False)
+chi2_results = {}
+
+for col in cat_features:
+    contingency_table = pd.crosstab(df_clean[col], df_clean['charges_bin'])
+    chi2_stat, p_val, _, _ = chi2_contingency(contingency)
+    decision = 'Reject Null (Keep Feature)' if p_val <alpha else 'Accept Null Feature)'
+    chi2_results[col]={
+        'chi2_statistis':chi2_stat,
+        'p_value':p_val,
+        'Decision':decision
+    }
+    
+chi2_df=pd.DataFrame(chi2_results).T
+chi2_df=chi2_df.sort_values(by='p_value')
+chi2_df
+
+final_df=df_clean[['age','is_female','bmi','children','is_smoker','charges','region_southeast','bmi_category_Obese']]
+final_df.head()
